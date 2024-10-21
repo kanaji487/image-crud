@@ -60,7 +60,26 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->validate([
+            "title" => "required|string|min:10",
+            "image" => "nullable|mimes:png,jpg,jpeg,webp|max:1024",
+            "description" => "required|string|min:10"
+        ]);
+
+        if($request->has("image")){
+            $destination = "uploads/images/".$post->image;
+
+            if(\File::exits($destination)){
+                \File::delete($destination);
+            }
+
+            $imageName = time.".".$request->image->imagegetClientoriginalExtension();
+            $request->image->move(public_path("uploads/images/",$imageName));
+            $data["image"] = $imageName;
+        }
+
+        $post->update($data);
+        return redirect()->route('post.index')->with("success", "Post has been created!");
     }
 
     /**
