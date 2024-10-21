@@ -31,6 +31,11 @@
         .table tbody tr:hover {
             background-color: #f1f1f1;
         }
+
+        td a {
+            color: black;
+            text-decoration: none;
+        }
     </style>
 </head>
 
@@ -62,7 +67,9 @@
                         </td>
                         <td>{{ $post->title }}</td>
                         <td>{{ $post->description }}</td>
-                        <td>Edit</td>
+                        <td>
+                            <a href="{{ route("post.edit", $post->id)}}">Edit</a>
+                        </td>
                         <td>Delete</td>
                     </tr>
                 @endforeach
