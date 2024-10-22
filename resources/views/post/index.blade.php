@@ -68,9 +68,17 @@
                         <td>{{ $post->title }}</td>
                         <td>{{ $post->description }}</td>
                         <td>
-                            <a href="{{ route("post.edit", $post->id)}}">Edit</a>
+                            <a class="btn btn-warning" href="{{ route("post.edit", $post->id)}}">Edit</a>
                         </td>
-                        <td>Delete</td>
+                        <td>
+                            <form action="{{ route("post.destroy",$post->id) }}" method="post">
+                                @csrf
+                                @method("Delete")
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

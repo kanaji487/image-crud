@@ -47,17 +47,11 @@ class PostController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Post $post)
     {
         return view("post.edit", compact("post"));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Post $post)
     {
         $data = $request->validate([
@@ -69,7 +63,7 @@ class PostController extends Controller
         if($request->has("image")){
             $destination = "uploads/images/".$post->image;
 
-            if(\File::exits($destination)){
+            if(\File::exists($destination)){
                 \File::delete($destination);
             }
 
@@ -82,11 +76,16 @@ class PostController extends Controller
         return redirect()->route('post.index')->with("success", "Post has been created!");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Post $post)
     {
-        //
+        if($post->image){
+            $destination = "uploads/images/".$post->image;
+            if(\File::exists($destination)){
+                \File::delete($destination);
+            }
+
+            $post->delete();
+            return back()->with("success", "Post has been deleted!");
+        }
     }
 }
